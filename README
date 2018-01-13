@@ -54,6 +54,8 @@ because then MTFI can't tell if you meant '--directive-96'.
   --trefunge:
   --quadrefunge:
   --quintefunge:
+  --sexefunge:
+  --septefunge:
   --dimensions=n:
     These specify how many dimensions to use.  Note that using any
     number of dimensions other than 2 is invalid for Befunge-93, and

@@ -63,6 +63,8 @@ const char help[] =
 "      --trefunge     : use 3 dimensions (Funge-97 and -98 only)\n"
 "      --quadrefunge  : use 4 dimensions (Funge-97 and -98 only)\n"
 "      --quintefunge  : use 5 dimensions (Funge-97 and -98 only)\n"
+"      --sexefunge    : use 6 dimensions (Funge-97 and -98 only)\n"
+"      --septefunge   : use 7 dimensions (Funge-97 and -98 only)\n"
 "      --dimensions=n : use n dimensions (1<=n<=7)\n"
 "  -=, --directive-97 : treat the Befunge-97 directive to follow on\n"
 "                       the command line as if it came before the\n"
@@ -110,6 +112,8 @@ const struct option lopts[] =
   { "preprocess", no_argument, 0, 'p' },
   { "quadrefunge", no_argument, 0, 5 },
   { "quintefunge", no_argument, 0, 6 },
+  { "septefunge", no_argument, 0, 8 },
+  { "sexefunge", no_argument, 0, 7 },
   { "trefunge", no_argument, 0, 4 },
   { "unefunge", no_argument, 0, 2 },
   { "version", no_argument, 0, 'v' },
@@ -248,7 +252,7 @@ int main( int argc, char **argv )
         }
         fyear = 97;
         break;
-      case 2: /* --unefunge, --trefunge, --quadrefunge, --quintefunge */
+      case 2: /* --unefunge, --trefunge, etc. */
       case 4:
       case 5:
       case 6:
