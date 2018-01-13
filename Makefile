@@ -4,7 +4,7 @@
 # but I give no guarantees, since my Unix knowledge is not wizardly.
 
 # The name of your C compiler.
-#CC =
+CC = gcc
 
 # The name of your linker.
 LINK = $(CC)
@@ -63,3 +63,7 @@ $(OBJECTS): %$(OBJ): %.c $(HEADERS)
 $(GETOPT): %$(OBJ): %.c getopt.h
 	$(CC) $(CFLAGS) $(ARCHC) $(NOLINK) $(OUTC) $@ $<
 
+.PHONY: clean
+
+clean:
+	rm -f *.o mtfi
