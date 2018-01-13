@@ -47,6 +47,7 @@ struct fmach;
 struct insset;
 
 #include "iface.h"
+#include "idefs.h"
 
 #ifndef PATH_MAX                   /* Should work on MS-DOS and POSIX */
 # define PATH_MAX 127

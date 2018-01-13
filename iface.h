@@ -61,7 +61,7 @@
 /* places calls to these are made are the ., instructions.  pstr() is */
 /* never called without TRACE or FUNGETRACE.  Note also that TRACE    */
 /* and FUNGETRACE are meant for debugging the core.                   */
-#define pnum( x, n ) fprintf( x, "%d", n ); fflush( x )
+#define pnum( x, n ) fprintf( x, "%ld", n ); fflush( x )
 #define pchr( x, n ) putc( n, x ); fflush( x )
 #define pstr( x, n ) fprintf( x, "%s", n ); fflush( x )
 

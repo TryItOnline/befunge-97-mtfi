@@ -31,7 +31,7 @@
 extern const struct insset isets[];
 /**********************************************************************/
 int fyear = 0;
-int fdim = 0;
+int fdims = 0;
 
 /* This is for command-line-specified Befunge-93: if the -3 switch is */
 /* used, all directive lines *will* be treated as code.  However, if  */
@@ -142,7 +142,7 @@ int main( int argc, char **argv )
   i = tmpfile();
   if ( i == NULL )
   {
-    fprintf( stderr, "unable to open temporary file\n", file );
+    fprintf( stderr, "unable to open temporary file\n" );
   }
   opterr = 0; /* We want to do our own error messages, not getopt's */
   while ( ( x = getopt_long( argc, argv, op, lopts, NULL ) )
@@ -204,13 +204,13 @@ int main( int argc, char **argv )
             "y funges\n" );
           return ( 1 );
         }
-        if ( fdim != 0 && fdim != x )
+        if ( fdims != 0 && fdims != x )
         {
           fprintf( stderr, "conflicting dimension options on command li"
             "ne\n" );
           return ( 1 );
         }
-        fdim = x;
+        fdims = x;
         break;
       case '3':
         if ( directives )
@@ -226,7 +226,7 @@ int main( int argc, char **argv )
           return ( 1 );
         }
         fyear = 93;
-        fdim = 2;
+        fdims = 2;
         break;
 #ifdef BEFUNGE96
       case '6':
@@ -258,22 +258,22 @@ int main( int argc, char **argv )
             "y funges\n" );
           return ( 1 );
         }
-        if ( fdim != 0 && fdim != x - 1 )
+        if ( fdims != 0 && fdims != x - 1 )
         {
           fprintf( stderr, "conflicting dimension options on command li"
             "ne\n" );
           return ( 1 );
         }
-        fdim = x - 1;
+        fdims = x - 1;
         break;
       case 3:
-        if ( fdim != 0 && fdim != 2 )
+        if ( fdims != 0 && fdims != 2 )
         {
           fprintf( stderr, "conflicting dimension options on command li"
             "ne\n" );
           return ( 1 );
         }
-        fdim = 2;
+        fdims = 2;
         break;
       case 'h': printf( help ); return ( 0 );
       case 'v': printf( version ); return ( 0 );
@@ -354,7 +354,7 @@ int main( int argc, char **argv )
     {
       for ( k[0] = 0; k[0] <= funge->size[0]; k[0]++ )
       {
-        printf( "%c", get( k, funge ) );
+        printf( "%c", (char) get( k, funge ) );
       }
       printf( "\n" );
     }
@@ -384,7 +384,7 @@ int main( int argc, char **argv )
 /**********************************************************************/
 int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
 {
-#define spiterr(x) {fprintf(stderr,"%s:%d: " x,fn,aline);return(0);}
+#define spiterr(x) {fprintf(stderr,"%s:%ld: " x,fn,aline);return(0);}
   static int depth = 0;
   struct thread *s, *t;
   FILE *g;
@@ -472,46 +472,46 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
             switch ( i )
             {
               case 0:
-                if ( directives || ( fdim != 2 && fdim != 0 ) )
+                if ( directives || ( fdims != 2 && fdims != 0 ) )
                   spiterr( "only 'l b93' or '=' may be used in Befunge-"
                     "93 source: try using -3\n" );
-                fdim = 2; fyear = 93; break;
+                fdims = 2; fyear = 93; break;
               case 1:
-                if ( ( fdim == 0 || fdim == 1 ) && ( fyear == 0 || fyear
+                if ( ( fdims == 0 || fdims == 1 ) && ( fyear == 0 || fyear
                   >= 97 ) )
                 {
-                  fdim = 1; fyear = 97; directives = aline; break;
+                  fdims = 1; fyear = 97; directives = aline; break;
                 }
                 else
                   spiterr( "more than one language type specified\n" );
               case 2:
-                if ( ( fdim == 0 || fdim == 2 ) && ( fyear == 0 || fyear
+                if ( ( fdims == 0 || fdims == 2 ) && ( fyear == 0 || fyear
                   >= 97 ) )
                 {
-                  fdim = 2; fyear = 97; directives = aline; break;
+                  fdims = 2; fyear = 97; directives = aline; break;
                 }
                 else
                   spiterr( "more than one language type specified\n" );
               case 3:
-                if ( ( fdim == 0 || fdim == 3 ) && ( fyear == 0 || fyear
+                if ( ( fdims == 0 || fdims == 3 ) && ( fyear == 0 || fyear
                   >= 97 ) )
                 {
-                  fdim = 3; fyear = 97; directives = aline; break;
+                  fdims = 3; fyear = 97; directives = aline; break;
                 }
                 else
                   spiterr( "more than one language type specified\n" );
               case 4:
-                if ( ( fdim == 0 || fdim == 4 ) && ( fyear == 0 || fyear
+                if ( ( fdims == 0 || fdims == 4 ) && ( fyear == 0 || fyear
                   >= 97 ) )
                 {
-                  fdim = 4; fyear = 97; directives = aline; break;
+                  fdims = 4; fyear = 97; directives = aline; break;
                 }
                 else
                   spiterr( "more than one language type specified\n" );
               case 5: spiterr( "unknown language type\n" );
             }
 #if MAXDIM < 4
-              if ( fdim > MAXDIM )
+              if ( fdims > MAXDIM )
                 spiterr( "unsupported number of dimensions\n" );
 #endif
             break;
@@ -619,10 +619,10 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
     line = 0;
     sol = 1;
   }
-  if ( fdim == 0 ) fdim = 2;
+  if ( fdims == 0 ) fdims = 2;
   if ( fyear == 0 )
   {
-    if ( directives == 0 && fdim == 2 && maxcol < 80 && maxline < 25 )
+    if ( directives == 0 && fdims == 2 && maxcol < 80 && maxline < 25 )
       fyear = 93;
     else
       fyear = 97;
@@ -638,7 +638,7 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
     funge->size[0] = 79;
     funge->size[1] = 24;
   }
-  funge->dim = fdim;
+  funge->dim = fdims;
   while ( ( x = getc( f ) ) != EOF )
   {
     if ( !b93 && ( fyear == 93 || fyear == 97 ) && x == dchr && sol )
@@ -676,7 +676,7 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
               i *= 10;
               i += x - '0';
             }
-            if ( k == fdim + 2 )
+            if ( k == fdims + 2 )
             {
               spiterr( "too many arguments to =o\n" );
             }
@@ -690,22 +690,22 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
               spiterr( "only numbers allowed as arguments to =o\n" );
             }
           }
-          if ( k != fdim && k != fdim + 2 )
+          if ( k != fdims && k != fdims + 2 )
             spiterr( "incomplete directive\n" );
-          if ( k == fdim + 2 )
+          if ( k == fdims + 2 )
           {
             cic = scr[0] - 1;
             lic = scr[1] - 1;
-            if ( cic >= fdim || lic >= fdim || cic < 0 || lic < 0 )
+            if ( cic >= fdims || lic >= fdims || cic < 0 || lic < 0 )
             {
               spiterr( "attempt to set pad or pdd to unused dimension" )
                 ;
             }
-            for ( k = 0; k < fdim; k++ ) loc[k] = scr[k + 2];
+            for ( k = 0; k < fdims; k++ ) loc[k] = scr[k + 2];
           }
           else
           {
-            for ( k = 0; k < fdim; k++ ) loc[k] = scr[k];
+            for ( k = 0; k < fdims; k++ ) loc[k] = scr[k];
           }
           line = col = 0;
           break;
@@ -740,7 +740,7 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
               i += z[k++] - '0';
             }
             scr[0] = i * j;
-            for ( k = 1; k < fdim; k++ )
+            for ( k = 1; k < fdims; k++ )
             {
               i = 0;
               while ( ( x = getc( f ) ) == ' ' );
@@ -780,7 +780,7 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
           }
           else
           {
-            for ( k = 0; k < fdim; k++ ) scr[k] = loc[k];
+            for ( k = 0; k < fdims; k++ ) scr[k] = loc[k];
             scr[cic] += col;
             scr[lic] += line;
           }
@@ -969,7 +969,7 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
 #ifdef BEFUNGE96
           x = remap[x];
 #endif
-          if ( fdim == 1 && line > 0 )
+          if ( fdims == 1 && line > 0 )
           {
             spiterr( "multiple source lines not allowed in Unefunge\n" );
           }
@@ -979,18 +979,18 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
             spiterr( "only 25 lines and 80 columns supported in Befunge"
               "-93\n" );
           }
-          for ( i = 0; i < fdim; i++ ) scr[i] = loc[i];
+          for ( i = 0; i < fdims; i++ ) scr[i] = loc[i];
           scr[lic] += line;
           scr[cic] += col;
           if ( !put( x, scr, funge ) ) return ( 0 );
           if ( !putflag && fyear == 97 && ip )
           {
-            t = newthread( fdim );
+            t = newthread( fdims );
             if ( t == NULL ) spiterr( "out of memory" );
             t->inputn[0] = t->outputn[0] = '\0';
             t->s.apex = t->s.base = NULL;
             t->s.readd = t->s.writed = 0;
-            for ( i = 0; i < fdim; i++ )
+            for ( i = 0; i < fdims; i++ )
             {
               t->coord[i] = scr[i];
               t->delta[i] = 0;
@@ -1014,12 +1014,12 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
   }
   if ( fyear != 97 && ip )
   {
-    t = newthread( fdim );
+    t = newthread( fdims );
     if ( t == NULL ) spiterr( "out of memory" );
     t->inputn[0] = t->outputn[0] = '\0';
     t->s.apex = t->s.base = NULL;
     t->s.readd = t->s.writed = 0;
-    for ( i = 0; i < fdim; i++ )
+    for ( i = 0; i < fdims; i++ )
     {
       t->coord[i] = 0;
       t->delta[i] = 0;
@@ -1045,10 +1045,10 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
       case 96: i = 4; break;
 #endif
       case 97:
-        switch ( fdim )
+        switch ( fdims )
         {
           case 1:
-          case 2: i = fdim; break;
+          case 2: i = fdims; break;
           default: i = 3; break;
         }
         break;
@@ -1090,8 +1090,9 @@ int load( FILE *f, const char *fn, fdat *l, struct fmach *funge, int ip )
 fdat readn( FILE *f )
 {
   fdat c;
+  char dummy;
   while ( !fscanf( f, "%ld", &c ) )
-    if ( !fscanf( f, "%c" ) ) return ( FUEOF );
+    if ( !fscanf( f, "%c", &dummy ) ) return ( FUEOF );
   return ( c );
 }
 

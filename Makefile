@@ -27,7 +27,7 @@ OUTL = -o
 
 # Whatever flags should always be passed to the compiler should be put
 # here.
-CFLAGS = -O2
+CFLAGS = -Wall -Wextra -Wno-comment -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -O2
 
 # Whatever flags should always be passed to the linker should be put
 # here.
