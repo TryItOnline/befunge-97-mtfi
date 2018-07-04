@@ -256,6 +256,8 @@ int main( int argc, char **argv )
       case 4:
       case 5:
       case 6:
+      case 7:
+      case 8:
         if ( fyear != 0 && fyear < 97 )
         {
           fprintf( stderr, "unusual dimensionality not availabe in earl"
